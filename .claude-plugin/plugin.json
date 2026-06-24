@@ -15,7 +15,8 @@
     "./agents/test-engineer.md",
     "./agents/web-performance-auditor.md",
     "./agents/test-executor.md",
-    "./agents/test-planner.md"
+    "./agents/test-planner.md",
+    "./agents/knowledge-builder.md"
   ],
   "mcpServers": {
     "e2e-test": {
