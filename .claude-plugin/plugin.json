@@ -2,10 +2,10 @@
   "name": "agent-skills",
   "description": "Production-grade engineering skills for AI coding agents — covering the full software development lifecycle from spec to ship.",
   "author": {
-    "name": "Addy Osmani"
+    "name": "tang xinghua"
   },
-  "homepage": "https://github.com/addyosmani/agent-skills",
-  "repository": "https://github.com/addyosmani/agent-skills",
+  "homepage": "https://github.com/xinghua-tang/agent-skills",
+  "repository": "https://github.com/xinghua-tang/agent-skills",
   "license": "MIT",
   "commands": ["./.claude/commands", "./commands"],
   "skills": "./skills",
@@ -13,6 +13,14 @@
     "./agents/code-reviewer.md",
     "./agents/security-auditor.md",
     "./agents/test-engineer.md",
-    "./agents/web-performance-auditor.md"
-  ]
+    "./agents/web-performance-auditor.md",
+    "./agents/test-executor.md",
+    "./agents/test-planner.md"
+  ],
+  "mcpServers": {
+    "e2e-test": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/e2e-test-mcp-server/index.js"]
+    }
+  }
 }

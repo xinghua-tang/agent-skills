@@ -1,0 +1,14 @@
+{
+  "createOrder": {
+    "description": "创建交易订单",
+    "required_params": ["buyer_id", "sku_id", "quantity"],
+    "optional_params": ["coupon_code", "is_pre_sale"],
+    "output_example": { "code": 0, "data": { "order_id": "123456", "status": "PENDING_PAY" } }
+  },
+  "payOrder": {
+    "description": "支付订单",
+    "required_params": ["order_id", "channel", "amount"],
+    "optional_params": [],
+    "output_example": { "code": 0, "data": { "payment_id": "pay_789", "status": "SUCCESS" } }
+  }
+}

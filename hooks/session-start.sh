@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "$(date -Iseconds) hook ran pid=$$" >> $HOME/claude-hook-trace.log
 # agent-skills session start hook
 # Injects the using-agent-skills meta-skill into every new session
 

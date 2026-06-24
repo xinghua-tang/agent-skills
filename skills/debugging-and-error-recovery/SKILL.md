@@ -187,6 +187,8 @@ Test fails after code change:
 
 ### Build Failure Triage
 
+For build errors caused by third-party packages, you must first use Context7 to query the latest documentation before attempting a fix. Blind version bumping is strictly prohibited.
+
 ```
 Build fails:
 ├── Type error → Read the error, check the types at the cited location
