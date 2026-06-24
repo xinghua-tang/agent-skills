@@ -9,6 +9,12 @@
           }
         ]
       }
+    ],
+    "PostInstall": [
+      {
+        "type": "command",
+        "command": "cd \"${CLAUDE_PLUGIN_ROOT}/mcp-servers/e2e-test-mcp-server\" && npm install --omit=dev --silent"
+      }
     ]
   }
 }
