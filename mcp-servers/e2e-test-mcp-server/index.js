@@ -357,4 +357,4 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 // ---------- 启动服务 ----------
 const transport = new StdioServerTransport();
 await server.connect(transport);
-console.error("E2E Test MCP Server running on stdio");
+console.info("E2E Test MCP Server running on stdio");
