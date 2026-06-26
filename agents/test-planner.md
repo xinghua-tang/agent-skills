@@ -41,12 +41,6 @@ tools: get_knowledge, list_skills, read_files, write_knowledge, list_directory, 
 **操作**：直接回复我：
 我将扫描路由/控制器文件，逆向提取接口定义，生成 `skills.json`，并辅助生成 `knowledge.md`。
 
-#### 方式 C：手动创建（临时兜底）
-如果你暂时没有文档，也不想扫描代码，可以：
-1. 运行初始化脚本生成模板：`./e2e-test-plugin/scripts/init-knowledge.sh`
-2. 手动填写 `knowledge-base/[domain]/knowledge.md` 和 `skills.json`
-3. 完成后告诉我“已准备好”
-
 ---
 
 **重要约束**：在用户明确告知“已准备好”或通过方式A/B成功写入文件之前，**不得**进入阶段 1。每次用户完成操作后，你必须**重新调用** `list_skills` 和 `get_knowledge` 验证，验证通过才能继续。
@@ -58,7 +52,7 @@ tools: get_knowledge, list_skills, read_files, write_knowledge, list_directory, 
 
 #### 方式A 处理流程：
 1. 调用 `read_files` 读取 PRD 文档内容。
-2. 调用 `read_files` 读取 API 文档内容（支持 JSON/YAML）。
+2. 调用 `read_files` 读取 API 文档内容（支持 JSON/YAML/Markdown）。
 3. 从 PRD 中提取：
    - 名词解释（术语定义）
    - 业务流程（步骤描述）
@@ -105,7 +99,7 @@ tools: get_knowledge, list_skills, read_files, write_knowledge, list_directory, 
 4. **渐进式加载**：发现新域依赖时，调用 `get_knowledge(新域)` 和 `list_skills(新域)` 追加加载。
 
 ### 第三步：输出调用计划
-以严格的 JSON 格式输出（包含 setup / execute / validate 三阶段），示例：
+以严格的 JSON 格式输出（包含 setup / execute / validate 三阶段）,写入文件 `<domain>/test_plan.json`，示例：
 ```json
 {
   "scenario": "预售订单分账测试",
