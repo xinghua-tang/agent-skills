@@ -62,7 +62,7 @@ Skills also activate automatically based on what you're doing — designing an A
 
 ```bash
 git clone https://github.com/xinghua-tang/agent-skills.git
-claude --plugin-dir /path/to/agent-skills
+claude --plugin-dir /path/to/agent-skills -debug
 ```
 
 </details>
