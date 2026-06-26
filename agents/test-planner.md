@@ -66,3 +66,13 @@ tools: get_knowledge, list_skills, read_files, write_knowledge, list_directory
 - `precheck_report`: { status, action_mapping, attribute_mapping, failure_reason }
 - `dependency_tree`: { nodes, edges: [{from, to, via}] }
 - `call_plan`: [{ step, task, tool, input_source }]
+
+---
+
+## 阶段 2：输出与交接
+测试计划输出后，向用户展示摘要（意图三元组、预检状态、调用步骤数）和**生成文件的完整路径**，然后询问：
+
+> ✅ 测试计划已生成，文件路径：`mcp-servers/knowledge-base/<domain>/test_plan.json`。是否交给 `test-executor` 执行？
+
+- 用户确认 → 提示用户输入 `/test-executor`，该文件将作为上下文传入。
+- 用户拒绝 → 结束，告知可随时手动执行。
