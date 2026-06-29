@@ -17,6 +17,56 @@ Skills encode the workflows, quality gates, and best practices that senior engin
   /spec          /plan          /build        /test         /review       /ship
 ```
 
+## End-to-End Test Workflow
+
+A self-contained testing framework for black-box API testing. A dedicated MCP server provides 7 tools, orchestrated by two specialist agents — **test-planner** and **test-executor** — to go from zero knowledge to verified, runnable test scripts. Every test step is contract-backed: no guessing, no hallucinated parameters.
+
+```
+                            ┌──────────────────────────┐
+  PRD + API Docs ─────────▶│   knowledge-builder       │
+  or code scan             │   generates per-domain:   │
+                            │   • knowledge.md          │
+                            │   • skills.json           │
+                            └────────────┬─────────────┘
+                                         │
+                            ┌────────────▼─────────────┐
+  /test-plan ─────────────▶│   test-planner            │
+                            │   • Gatekeeper check      │
+                            │   • Intent triple extract │
+                            │   • Reverse-chain mapping │
+                            │   • Dependency tree build │
+                            │   • Topological sort      │
+                            │   → test_plan.json        │
+                            └────────────┬─────────────┘
+                                         │
+                            ┌────────────▼─────────────┐
+  /test-executor ─────────▶│   test-executor           │
+                            │   • Script reuse scan     │
+                            │   • Debug-first probe     │
+                            │   • Assemble execute()    │
+                            │   • Run → Fix → Retry     │
+                            │   • Archive & index       │
+                            └──────────────────────────┘
+```
+
+| # | Phase | Agent | What happens |
+|---|-------|-------|--------------|
+| 0 | **Knowledge building** | `knowledge-builder` | Generates `knowledge.md` (business nouns, flows, constraints) and `skills.json` (API catalog with I/O shapes) from PRD + API docs, or by scanning backend controllers |
+| 1 | **Gatekeeper check** | `test-planner` | Calls `list_skills(domain)` + `get_knowledge(domain)`. If either is empty, blocks and guides you to provide docs or a code path — no guesswork allowed |
+| 2 | **Reverse-chained plan** | `test-planner` | Intent triple (Actions/Entities/Attributes) → API-to-action mapping → attribute-to-field check → dependency tree from inputs back to source outputs → topological sort into ordered call plan |
+| 3 | **Plan output** | `test-planner` | Writes `knowledge-base/{domain}/test_plan.json` with `intent_analysis`, `precheck_report`, `dependency_tree`, and `call_plan` |
+| 4 | **Script reuse** | `test-executor` | Scans the script index via `manage_script list`. Reuses historical scripts when similarity > 80%. Borrows call chains when partial match |
+| 5 | **Debug-first explore** | `test-executor` | For each unmapped API, calls `exec_skill(debug_mode: true)` — passes parameters, observes real responses, discovers hidden constraints (units, enums, pseudo-optional fields). Never guesses from documentation alone |
+| 6 | **Execute-fix loop** | `test-executor` | Chains verified calls into an `execute()` function, runs step by step passing outputs as downstream inputs. Fails → diagnoses → fixes → retries (max 5 rounds). Passes → archives |
+| 7 | **Self-learning** | `test-executor` | Writes discovered pitfalls back to tool prompts (`toolPrompt`), updates the script index so the next similar test reuses the work |
+
+### Commands
+
+| What you're doing | Command | Key principle |
+|-------------------|---------|---------------|
+| Generate a contract-backed test plan from knowledge base | `/test-plan` | No knowledge base, no plan |
+| Execute a test plan against real APIs and produce verified scripts | `/test-executor` | Debug first, script second |
+
 ---
 
 ## Commands
