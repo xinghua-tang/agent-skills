@@ -156,6 +156,7 @@ For a complete feature, the typical skill sequence is:
 14. documentation-and-adrs      → Document decisions
 15. deprecation-and-migration   → Retire old systems and move users safely when needed
 16. shipping-and-launch         → Deploy safely
+17. test-planner                → Plan and prioritize tests
 ```
 
 Not every task needs every skill. A bug fix might only need: `debugging-and-error-recovery` → `test-driven-development` → `code-review-and-quality`.

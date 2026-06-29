@@ -2,7 +2,7 @@
 description: 启动 test-planner agent — 检查知识库完整性，缺失时引导生成，就绪后输出端到端测试计划
 ---
 
-Spawn the `test-planner` subagent.
+Invoke the agent-skills:test-planner skill.
 
 Tell the agent the business domain to test (e.g. `trade`, `user`, `pay`).
 The agent will:
