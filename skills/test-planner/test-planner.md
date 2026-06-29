@@ -9,31 +9,6 @@ allowed-tools: get_knowledge, list_skills, read_files, write_knowledge, list_dir
 2. 遵循 Fail-Fast：任一动作/属性找不到对应接口或入参字段，立即终止报告”能力不支持”。所有推导基于接口契约，禁止经验猜测。
 
 # 核心工作流（严格顺序执行）
-
-## 阶段 0：知识库就绪检查（Gatekeeper）
-**此阶段未通过前，禁止进入测试规划。**
-
-### 0.1 探测 → 分支
-1. 从用户需求中识别**核心业务域**（如”测试下单” → `trade`；若无法确定，询问用户）。
-2. 调用 `list_skills(domain)` 和 `get_knowledge(domain)`。
-3. **✅ 完整**（两个调用均返回有效数据）→ 直接进入阶段 1。
-4. **❌ 缺失**（任一返回”未找到”/空）→ 执行 0.2。
-
-### 0.2 引导生成（缺失时）
-告知用户”`[domain]` 域知识库为空，无法规划测试”，引导二选一：
-
-- **方式 A（推荐）**：提供 PRD + 接口文档（OpenAPI/Swagger/Postman/Markdown），两份缺一不可。
-- **方式 B**：提供后端代码仓库路径，我将扫描路由/控制器逆向提取接口定义。
-
-用户选择并给出材料后，**委托 `knowledge-builder` skill 执行生成**，写入 `knowledge.md` 和 `skills.json`。
-生成完成后**重新调用 0.1 验证**，不通过则继续阻塞。
-
-**约束**：用户未确认”已准备好”或 write 未成功前，不得跨越此阶段。
-
----
-
-## 阶段 1：测试规划（知识库就绪后，严格顺序执行）
-
 ### 第一步：意图三元组拆解
 将 `user_query` 拆解为三维：
 - **Actions**：系统执行的动作（Create、Execute、Verify、Query）
@@ -60,19 +35,9 @@ allowed-tools: get_knowledge, list_skills, read_files, write_knowledge, list_dir
 - `tool`：接口/工具名称
 - `input_source`：`"预置数据"` 或 `"来自 {{step_N.field}}"`
 
-## 输出格式
+## 第四步：输出格式
 输出合法 JSON，写入 `<domain>/test_plan.json`，结构：
 - `intent_analysis`: { actions, entities, attributes }
 - `precheck_report`: { status, action_mapping, attribute_mapping, failure_reason }
 - `dependency_tree`: { nodes, edges: [{from, to, via}] }
 - `call_plan`: [{ step, task, tool, input_source }]
-
----
-
-## 阶段 2：输出与交接
-测试计划输出后，向用户展示摘要（意图三元组、预检状态、调用步骤数）和**生成文件的完整路径**，然后询问：
-
-> ✅ 测试计划已生成，文件路径：`mcp-servers/knowledge-base/<domain>/test_plan.json`。是否交给 `test-executor` 执行？
-
-- 用户确认 → 提示用户输入 `/test-executor`，该文件将作为上下文传入。
-- 用户拒绝 → 结束，告知可随时手动执行。
