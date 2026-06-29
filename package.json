@@ -1,14 +1,14 @@
 {
   "name": "agent-skills-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "MCP Server for Agent Skills (Scripts via Full Context Injection)",
   "type": "module",
-  "main": "mcp-servers/e2e-test-mcp-server/index.js",
+  "main": "mcp-servers/e2e-test-mcp-server/run.js",
   "bin": {
-    "agent-skills": "mcp-servers/e2e-test-mcp-server/index.js"
+    "agent-skills": "mcp-servers/e2e-test-mcp-server/run.js"
   },
   "scripts": {
-    "start": "node mcp-servers/e2e-test-mcp-server/index.js"
+    "start": "node mcp-servers/e2e-test-mcp-server/run.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

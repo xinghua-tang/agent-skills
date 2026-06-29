@@ -1,6 +1,6 @@
 {
   "name": "agent-skills",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Production-grade engineering skills for AI coding agents — covering the full software development lifecycle from spec to ship.",
   "author": {
     "name": "tangXinghua"
@@ -22,7 +22,10 @@
   "mcpServers": {
     "e2e-test": {
       "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/e2e-test-mcp-server/index.js"]
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/e2e-test-mcp-server/run.js"],
+      "env": {
+        "NODE_PATH": "${CLAUDE_PLUGIN_ROOT}/node_modules"
+      }
     }
   }
 }
